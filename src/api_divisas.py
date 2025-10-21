@@ -13,7 +13,7 @@ def obtener_tipo_cambio(moneda_objetivo):
         respuesta = requests.get(url_base, timeout=10)
         respuesta.raise_for_status()
         data = respuesta.json()
-        # print(json.dumps(data["rates"][moneda_objetivo], sort_keys=True, indent=4))
+        
         if "rates" not in data:
             raise ValueError("Estructura inesperada en respuesta de ExchangeRate API")
 
@@ -37,14 +37,14 @@ def obtener_tipo_cambio(moneda_objetivo):
         # Calcular variación diaria simulada (último día vs anterior)
         variacion_diaria = round(((historico[-1] - historico[-2]) / historico[-2]) * 100, 2)
 
-         # Determinar tendencia simple
-        tendencia = "negativa" if historico[-1] < historico[0] else "positiva"
+        # --- Tendencia ---
+        tendencia = analizar_tendencia(historico)
 
         return {
             # "moneda_objetivo": moneda_objetivo,
             "tipo_cambio_actual": tipo_cambio_actual,
             "variacion_diaria": variacion_diaria,
-            "tendencia_5_dias": tendencia,
+            "tendencia_5_dias": tendencia["tendencia"],
             # "historico": historico
         }
 
@@ -55,3 +55,51 @@ def obtener_tipo_cambio(moneda_objetivo):
     except ValueError as e:
         logging.error(f"Error en formato de respuesta o moneda: {e}")
         raise
+
+
+def analizar_tendencia(historico):
+    """Analiza una lista de valores y determina la tendencia."""
+    direcciones = []
+    for i in range(1, len(historico)):
+        if historico[i] > historico[i - 1]:
+            direcciones.append("up")
+        elif historico[i] < historico[i - 1]:
+            direcciones.append("down")
+        else:
+            direcciones.append("flat")
+
+    # Contadores de rachas
+    max_positiva = max_negativa = count_up = count_down = 0
+
+    for d in direcciones:
+        if d == "up":
+            count_up += 1
+            count_down = 0
+            max_positiva = max(max_positiva, count_up)
+        elif d == "down":
+            count_down += 1
+            count_up = 0
+            max_negativa = max(max_negativa, count_down)
+        else:
+            count_up = count_down = 0
+
+    # Determinar tendencia principal
+    if max_positiva >= 3:
+        tendencia = "positiva"
+        dias = max_positiva
+    elif max_negativa >= 3:
+        tendencia = "negativa"
+        dias = max_negativa
+    else:
+        tendencia = "estable"
+        dias = 0
+
+    return {
+        "tendencia": tendencia,
+        "dias_consecutivos": dias,
+        "descripcion": (
+            f"Tendencia {tendencia} durante {dias} días consecutivos"
+            if dias > 0
+            else "Tendencia estable sin rachas significativas"
+        )
+    }

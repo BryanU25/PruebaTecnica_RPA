@@ -1,0 +1,6 @@
+2025-10-21 09:13:54 [INFO] Datos climáticos obtenidos correctamente (40.7128, -74.006)
+2025-10-21 09:16:09 [INFO] Datos climáticos obtenidos correctamente (40.7128, -74.006)
+2025-10-21 09:20:07 [INFO] Datos climáticos obtenidos correctamente (40.7128, -74.006)
+2025-10-21 09:37:59 [INFO] Datos climáticos obtenidos correctamente (51.5074, -0.1278)
+2025-10-21 09:37:59 [INFO] Datos climáticos transformados correctamente para {'nombre': 'Londres', 'lat': 51.5074, 'lon': -0.1278, 'moneda': 'GBP', 'timezone': 'Europe/London'}
+2025-10-21 09:38:00 [INFO] Tipo de cambio obtenido correctamente para GBP

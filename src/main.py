@@ -3,6 +3,8 @@ import api_clima as ac
 import api_divisas as ad
 import api_tempo as at
 import procesar_clima as pc 
+import procesar_ciudades as pz
+import datetime
 from pathlib import Path
 from tenacity import RetryError
 import logging
@@ -58,16 +60,16 @@ def main():
         except RetryError as e:
             datos_tiempo = manejar_error_api("WorldTimeAPI", nombre, e)
 
-         # Guardar resultados parciales (aunque alguno sea None)
-        resultados.append({
-            "ciudad": nombre,
-            "clima": datos_clima["clima"] if datos_clima else None,
-            "finanzas": datos_divisas if datos_divisas else None,
-            "tiempo": datos_tiempo if datos_tiempo else None
-        })
+        # --- Combinar resultados (aunque alguno sea None) ---
+        resultado_ciudad = pz.procesar_ciudad(ciudad, datos_clima, datos_divisas, datos_tiempo)
+        resultados.append(resultado_ciudad)
 
-    # Al final, guardar un resumen general
-    ruta = Path(__file__).parent.parent / "data" / "resultado_general.json"
+    # print(json.dumps(resultados, sort_keys=True, indent=4))
+
+     # --- Guardar resultado general con versiones ---
+    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+    ruta = Path(__file__).parent.parent / "data" / f"resultado_general_{timestamp}.json"
+
     with open(ruta, "w", encoding="utf-8") as f:
         json.dump(resultados, f, indent=4, ensure_ascii=False)
 

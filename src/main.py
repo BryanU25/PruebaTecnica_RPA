@@ -8,13 +8,10 @@ import datetime
 from pathlib import Path
 from tenacity import RetryError
 import logging
+from config_logs import configurar_logs_generales
 
-logging.basicConfig(
-    filename="logs/app.log",          # Archivo donde se guardan los logs
-    level=logging.INFO,               # Nivel: DEBUG, INFO, WARNING, ERROR
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+configurar_logs_generales()
+
 
 def manejar_error_api(nombre_api, ciudad, error):
     """

@@ -323,3 +323,97 @@
 2025-10-21 10:17:45 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Nueva York: RetryError[<Future at 0x2a44a2d5350 state=finished raised ConnectionError>]
 2025-10-21 10:17:45 [INFO] Alertas evaluadas para Nueva York: 0 encontradas
 2025-10-21 10:17:45 [INFO] Ciudad procesada: Nueva York - IVV 100.0
+2025-10-21 10:22:26 [INFO] ✅ Configuración de logs generales inicializada.
+2025-10-21 10:22:26 [INFO] 📄 app.log y error.log con rotación activa.
+2025-10-21 10:22:49 [INFO] ✅ Configuración de logs generales inicializada.
+2025-10-21 10:22:49 [INFO] 📄 app.log y error.log con rotación activa.
+2025-10-21 10:23:50 [INFO] Datos climáticos obtenidos correctamente (40.7128, -74.006)
+2025-10-21 10:23:50 [INFO] Datos climáticos transformados correctamente para Nueva York
+2025-10-21 10:23:51 [INFO] Tipo de cambio obtenido correctamente para USD
+2025-10-21 10:23:52 [ERROR] Error de conexión con WorldTimeAPI (America/New_York): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:23:54 [ERROR] Error de conexión con WorldTimeAPI (America/New_York): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:23:57 [ERROR] Error de conexión con WorldTimeAPI (America/New_York): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:23:57 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Nueva York: RetryError[<Future at 0x27f60a47a80 state=finished raised ConnectionError>]
+2025-10-21 10:23:57 [INFO] Alertas evaluadas para Nueva York: 0 encontradas
+2025-10-21 10:23:57 [INFO] Ciudad procesada: Nueva York - IVV 100.0
+2025-10-21 10:23:58 [INFO] Datos climáticos obtenidos correctamente (51.5074, -0.1278)
+2025-10-21 10:23:58 [INFO] Datos climáticos transformados correctamente para Londres
+2025-10-21 10:23:58 [INFO] Tipo de cambio obtenido correctamente para GBP
+2025-10-21 10:23:59 [ERROR] Error de conexión con WorldTimeAPI (Europe/London): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:01 [ERROR] Error de conexión con WorldTimeAPI (Europe/London): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:03 [ERROR] Error de conexión con WorldTimeAPI (Europe/London): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:03 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Londres: RetryError[<Future at 0x27f60ada450 state=finished raised ConnectionError>]
+2025-10-21 10:24:03 [INFO] Alertas evaluadas para Londres: 0 encontradas
+2025-10-21 10:24:03 [INFO] Ciudad procesada: Londres - IVV 100.0
+2025-10-21 10:24:04 [INFO] Datos climáticos obtenidos correctamente (35.6762, 139.6503)
+2025-10-21 10:24:04 [INFO] Datos climáticos transformados correctamente para Tokio
+2025-10-21 10:24:05 [INFO] Tipo de cambio obtenido correctamente para JPY
+2025-10-21 10:24:06 [ERROR] Error de conexión con WorldTimeAPI (Asia/Tokyo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:08 [ERROR] Error de conexión con WorldTimeAPI (Asia/Tokyo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:10 [ERROR] Error de conexión con WorldTimeAPI (Asia/Tokyo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:10 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Tokio: RetryError[<Future at 0x27f616d4600 state=finished raised ConnectionError>]
+2025-10-21 10:24:10 [INFO] Alertas evaluadas para Tokio: 0 encontradas
+2025-10-21 10:24:10 [INFO] Ciudad procesada: Tokio - IVV 100.0
+2025-10-21 10:24:11 [INFO] Datos climáticos obtenidos correctamente (-23.5505, -46.6333)
+2025-10-21 10:24:11 [INFO] Datos climáticos transformados correctamente para São Paulo
+2025-10-21 10:24:12 [INFO] Tipo de cambio obtenido correctamente para BRL
+2025-10-21 10:24:12 [ERROR] Error de conexión con WorldTimeAPI (America/Sao_Paulo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:14 [ERROR] Error de conexión con WorldTimeAPI (America/Sao_Paulo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:17 [ERROR] Error de conexión con WorldTimeAPI (America/Sao_Paulo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:17 [ERROR] [WorldTimeAPI] No se pudo obtener datos para São Paulo: RetryError[<Future at 0x27f60b16c10 state=finished raised ConnectionError>]
+2025-10-21 10:24:17 [INFO] Alertas evaluadas para São Paulo: 1 encontradas
+2025-10-21 10:24:17 [INFO] Ciudad procesada: São Paulo - IVV 85.0
+2025-10-21 10:24:18 [INFO] Datos climáticos obtenidos correctamente (-33.8688, 151.2093)
+2025-10-21 10:24:18 [INFO] Datos climáticos transformados correctamente para Sídney
+2025-10-21 10:24:19 [INFO] Tipo de cambio obtenido correctamente para AUD
+2025-10-21 10:24:19 [ERROR] Error de conexión con WorldTimeAPI (Australia/Sydney): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:21 [ERROR] Error de conexión con WorldTimeAPI (Australia/Sydney): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:23 [ERROR] Error de conexión con WorldTimeAPI (Australia/Sydney): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:24:23 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Sídney: RetryError[<Future at 0x27f616b0c50 state=finished raised ConnectionError>]
+2025-10-21 10:24:23 [INFO] Alertas evaluadas para Sídney: 0 encontradas
+2025-10-21 10:24:23 [INFO] Ciudad procesada: Sídney - IVV 100.0
+2025-10-21 10:25:24 [INFO] Datos climáticos obtenidos correctamente (40.7128, -74.006)
+2025-10-21 10:25:24 [INFO] Datos climáticos transformados correctamente para Nueva York
+2025-10-21 10:25:25 [INFO] Tipo de cambio obtenido correctamente para USD
+2025-10-21 10:25:26 [ERROR] Error de conexión con WorldTimeAPI (America/New_York): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:29 [ERROR] Error de conexión con WorldTimeAPI (America/New_York): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:31 [ERROR] Error de conexión con WorldTimeAPI (America/New_York): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:31 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Nueva York: RetryError[<Future at 0x27f616da350 state=finished raised ConnectionError>]
+2025-10-21 10:25:31 [INFO] Alertas evaluadas para Nueva York: 0 encontradas
+2025-10-21 10:25:31 [INFO] Ciudad procesada: Nueva York - IVV 100.0
+2025-10-21 10:25:32 [INFO] Datos climáticos obtenidos correctamente (51.5074, -0.1278)
+2025-10-21 10:25:32 [INFO] Datos climáticos transformados correctamente para Londres
+2025-10-21 10:25:33 [INFO] Tipo de cambio obtenido correctamente para GBP
+2025-10-21 10:25:33 [ERROR] Error de conexión con WorldTimeAPI (Europe/London): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:35 [ERROR] Error de conexión con WorldTimeAPI (Europe/London): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:38 [ERROR] Error de conexión con WorldTimeAPI (Europe/London): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:38 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Londres: RetryError[<Future at 0x27f616e25d0 state=finished raised ConnectionError>]
+2025-10-21 10:25:38 [INFO] Alertas evaluadas para Londres: 0 encontradas
+2025-10-21 10:25:38 [INFO] Ciudad procesada: Londres - IVV 100.0
+2025-10-21 10:25:39 [INFO] Datos climáticos obtenidos correctamente (35.6762, 139.6503)
+2025-10-21 10:25:39 [INFO] Datos climáticos transformados correctamente para Tokio
+2025-10-21 10:25:40 [INFO] Tipo de cambio obtenido correctamente para JPY
+2025-10-21 10:25:40 [ERROR] Error de conexión con WorldTimeAPI (Asia/Tokyo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:42 [ERROR] Error de conexión con WorldTimeAPI (Asia/Tokyo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:44 [ERROR] Error de conexión con WorldTimeAPI (Asia/Tokyo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:44 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Tokio: RetryError[<Future at 0x27f616d9650 state=finished raised ConnectionError>]
+2025-10-21 10:25:44 [INFO] Alertas evaluadas para Tokio: 0 encontradas
+2025-10-21 10:25:44 [INFO] Ciudad procesada: Tokio - IVV 100.0
+2025-10-21 10:25:45 [INFO] Datos climáticos obtenidos correctamente (-23.5505, -46.6333)
+2025-10-21 10:25:45 [INFO] Datos climáticos transformados correctamente para São Paulo
+2025-10-21 10:25:46 [INFO] Tipo de cambio obtenido correctamente para BRL
+2025-10-21 10:25:46 [ERROR] Error de conexión con WorldTimeAPI (America/Sao_Paulo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:49 [ERROR] Error de conexión con WorldTimeAPI (America/Sao_Paulo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:51 [ERROR] Error de conexión con WorldTimeAPI (America/Sao_Paulo): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:51 [ERROR] [WorldTimeAPI] No se pudo obtener datos para São Paulo: RetryError[<Future at 0x27f616b0650 state=finished raised ConnectionError>]
+2025-10-21 10:25:51 [INFO] Alertas evaluadas para São Paulo: 0 encontradas
+2025-10-21 10:25:51 [INFO] Ciudad procesada: São Paulo - IVV 85.0
+2025-10-21 10:25:52 [INFO] Datos climáticos obtenidos correctamente (-33.8688, 151.2093)
+2025-10-21 10:25:52 [INFO] Datos climáticos transformados correctamente para Sídney
+2025-10-21 10:25:53 [INFO] Tipo de cambio obtenido correctamente para AUD
+2025-10-21 10:25:53 [ERROR] Error de conexión con WorldTimeAPI (Australia/Sydney): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:56 [ERROR] Error de conexión con WorldTimeAPI (Australia/Sydney): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:58 [ERROR] Error de conexión con WorldTimeAPI (Australia/Sydney): ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+2025-10-21 10:25:58 [ERROR] [WorldTimeAPI] No se pudo obtener datos para Sídney: RetryError[<Future at 0x27f616e16d0 state=finished raised ConnectionError>]
+2025-10-21 10:25:58 [INFO] Alertas evaluadas para Sídney: 0 encontradas
+2025-10-21 10:25:58 [INFO] Ciudad procesada: Sídney - IVV 100.0

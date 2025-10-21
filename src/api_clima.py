@@ -2,13 +2,6 @@ import requests
 import logging
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-logging.basicConfig(
-    filename="logs/app.log",          # Archivo donde se guardan los logs
-    level=logging.INFO,               # Nivel: DEBUG, INFO, WARNING, ERROR
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
-
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 def obtener_datos_clima(lat, lon):

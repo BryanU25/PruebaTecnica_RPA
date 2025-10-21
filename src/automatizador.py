@@ -1,8 +1,8 @@
 import time
 import schedule
 import datetime
-from main import main
-from config_logs import configurar_logger_automatizacion
+from src.main import main
+from config.config_logs  import configurar_logger_automatizacion
 
 logger = configurar_logger_automatizacion()
 
@@ -23,8 +23,8 @@ def ejecutar_proceso():
 
 def iniciar_automatizacion():
     """ Programa la ejecución automática cada 30 minutos. """
-    schedule.every(1).minutes.do(ejecutar_proceso)
-    # schedule.every(30).minutes.do(ejecutar_proceso)
+    # schedule.every(1).minutes.do(ejecutar_proceso)
+    schedule.every(30).minutes.do(ejecutar_proceso)
     logger.info("🕒 Automatización iniciada. Ejecución cada 30 minutos.")
 
     # Bucle infinito para mantener el proceso corriendo

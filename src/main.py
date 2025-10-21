@@ -1,14 +1,14 @@
 import json
-import api_clima as ac
-import api_divisas as ad
-import api_tempo as at
-import procesar_clima as pc 
-import procesar_ciudades as pz
+from src import api_clima as ac
+from src import api_divisas as ad
+from src import api_tempo as at
+from src import procesar_clima as pc 
+from src import procesar_ciudades as pz
 import datetime
 from pathlib import Path
 from tenacity import RetryError
 import logging
-from config_logs import configurar_logs_generales
+from config.config_logs import configurar_logs_generales
 
 configurar_logs_generales()
 

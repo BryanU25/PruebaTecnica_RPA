@@ -1,0 +1,28 @@
+# --- ENTORNO VIRTUAL ---
+venv/
+.env
+
+# --- CACHÉS PYTHON ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- LOGS ---
+logs/
+*.log
+
+# --- DATOS GENERADOS AUTOMÁTICAMENTE ---
+data/resultado_general_*.json
+
+# --- ARCHIVOS TEMPORALES ---
+*.tmp
+*.zip
+*.csv
+*.xlsx
+*.bak
+
+# --- CONFIGURACIÓN LOCAL ---
+.DS_Store
+.idea/
+.vscode/

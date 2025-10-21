@@ -1,0 +1,14 @@
+{
+  "ciudades": [
+    {"nombre": "Nueva York", "lat": 40.7128, "lon": -74.0060, "moneda": "USD", "timezone": "America/New_York"},
+    {"nombre": "Londres", "lat": 51.5074, "lon": -0.1278, "moneda": "GBP", "timezone": "Europe/London"},
+    {"nombre": "Tokio", "lat": 35.6762, "lon": 139.6503, "moneda": "JPY", "timezone": "Asia/Tokyo"},
+    {"nombre": "São Paulo", "lat": -23.5505, "lon": -46.6333, "moneda": "BRL", "timezone": "America/Sao_Paulo"},
+    {"nombre": "Sídney", "lat": -33.8688, "lon": 151.2093, "moneda": "AUD", "timezone": "Australia/Sydney"}
+  ],
+  "apis": {
+    "clima": "https://api.open-meteo.com/v1/forecast",
+    "divisas": "https://open.er-api.com/v6/latest/USD",
+    "horarios": "http://worldtimeapi.org/api/timezone"                 
+  }
+}

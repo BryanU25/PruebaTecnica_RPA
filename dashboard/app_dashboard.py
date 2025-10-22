@@ -12,7 +12,6 @@ st.set_page_config(
 )
 
 st.title("📊 Dashboard – Prueba Técnica (Mission SAS)")
-st.caption("Etapa 3: Carga del archivo JSON más reciente desde /data")
 
 # ---------- Helpers con caché ----------
 @st.cache_data(show_spinner=False)
@@ -53,11 +52,27 @@ if selected_path is None:
     st.error("No se pudo determinar el archivo más reciente.")
     st.stop()
 
-colA, colB = st.columns([1, 2])
-with colA:
-    st.metric("Archivo seleccionado", selected_path.name)
-with colB:
-    st.caption(f"Ruta: `{selected_path}`")
+# ------------------------------------------------------------
+# 📅 Mostrar información legible del registro cargado
+# ------------------------------------------------------------
+from datetime import datetime
+
+def formatear_nombre_archivo(nombre: str) -> str:
+    """
+    Convierte el nombre del archivo JSON en un título legible.
+    Ejemplo: resultado_general_20251021_150400.json → Registro del 2025-10-21 a las 15:04:00
+    """
+    try:
+        base = nombre.replace("resultado_general_", "").replace(".json", "")
+        fecha_str, hora_str = base.split("_")
+        fecha = datetime.strptime(f"{fecha_str}{hora_str}", "%Y%m%d%H%M%S")
+        return f"Registro del {fecha.strftime('%Y-%m-%d')} a las {fecha.strftime('%H:%M:%S')}"
+    except Exception:
+        return "Registro sin formato reconocido"
+
+# Mostrar título en formato natural
+
+st.subheader(formatear_nombre_archivo(selected_path.name))
 
 # ---------- Cargar datos ----------
 try:
@@ -86,126 +101,124 @@ if missing:
         for idx, msg in missing[:20]:
             st.write(f"• Elemento {idx}: {msg}")
 
-st.success("✅ Datos cargados correctamente.")
-st.write(f"Ciudades encontradas: **{len(data)}**")
 
 # ------------------------------------------------------------
-# 🔹 Selector de ciudad (sidebar)
+#  Resumen general de métricas por ciudad
 # ------------------------------------------------------------
-st.sidebar.header("🏙️ Seleccionar ciudad")
-
-# Obtener lista de nombres únicos
-ciudades_disponibles = [c["ciudad"] for c in data if "ciudad" in c]
-if not ciudades_disponibles:
-    st.error("No se encontraron nombres de ciudades en el archivo cargado.")
-    st.stop()
-
-ciudad_seleccionada = st.sidebar.selectbox(
-    "Ciudad:",
-    options=ciudades_disponibles,
-    index=0,
-    help="Selecciona la ciudad para ver sus métricas y alertas."
-)
-
-# Obtener los datos de la ciudad seleccionada
-ciudad_data = next((c for c in data if c["ciudad"] == ciudad_seleccionada), None)
-if ciudad_data is None:
-    st.error("No se pudo cargar la información de la ciudad seleccionada.")
-    st.stop()
-
 st.divider()
-st.subheader(f"🌆 Datos actuales para **{ciudad_seleccionada}**")
+st.subheader("🌆 Resumen general de métricas por ciudad")
 
-# ------------------------------------------------------------
-# 📊 Métricas principales (IVV, Nivel de riesgo, Motivo)
-# ------------------------------------------------------------
+# Extraer métricas relevantes de cada ciudad
+filas = []
+for c in data:
+    ciudad = c.get("ciudad", "—")
+    clima = c.get("clima", {})
+    fin = c.get("finanzas", {})
+    ivv = c.get("ivv_score")
+    nivel = c.get("nivel_riesgo", "DESCONOCIDO")
+    color = c.get("color", "#6c757d")
 
-ivv_info = ciudad_data.get("componentes_ivv", {})
-ivv_score = ciudad_data.get("ivv_score", None)
-nivel = ciudad_data.get("nivel_riesgo", "DESCONOCIDO")
-color = ciudad_data.get("color", "#6c757d")
-motivo = ciudad_data.get("motivo", None)
-
-col1, col2, col3 = st.columns([1, 1, 2])
-
-with col1:
-    st.metric(
-        label="IVV (Índice de Viabilidad de Viaje)",
-        value=f"{ivv_score if ivv_score is not None else '—'}",
-        delta=None,
-        help="Índice ponderado entre clima, divisas y radiación UV (0-100)."
-    )
-
-with col2:
-    st.markdown(
-        f"""
-        <div style="text-align:center; padding:0.5em;
-                    border-radius:8px; background-color:{color}; color:white;">
-            <b>Nivel de riesgo:</b><br>{nivel}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-with col3:
-    if motivo:
-        st.warning(f"ℹ️ **Motivo:** {motivo}")
-    else:
-        st.success("✅ Datos completos para el cálculo del IVV.")
-
-st.markdown("#### 🔍 Componentes del IVV")
+    filas.append({
+        "Ciudad": ciudad,
+        "Temperatura (°C)": clima.get("temperatura_actual", "—"),
+        "Viento (km/h)": clima.get("viento", "—"),
+        "UV": clima.get("uv", "—"),
+        "Precipitación (%)": clima.get("precipitacion", "—"),
+        "Tipo de cambio": fin.get("tipo_cambio_actual", "—"),
+        "Variación diaria (%)": fin.get("variacion_diaria", "—"),
+        "Tendencia": fin.get("tendencia_5_dias", "—"),
+        "IVV Score": ivv if ivv is not None else "—",
+        "Nivel de riesgo": nivel,
+        "color": color
+    })
 
 
-if ivv_info:
-    col_a, col_b, col_c = st.columns(3)
-    col_a.metric("🌤️ Clima", ivv_info.get("clima_score", "—"))
-    col_b.metric("💱 Divisas", ivv_info.get("cambio_score", "—"))
-    col_c.metric("☀️ UV", ivv_info.get("uv_score", "—"))
+df_resumen = pd.DataFrame(filas)
+
+if df_resumen.empty:
+    st.info("No se encontraron datos para generar la tabla resumen.")
 else:
-    st.info("No hay datos de componentes IVV disponibles para esta ciudad.")
+    # Crear copia sin columna de color (solo para estilo)
+    df_vista = df_resumen.drop(columns=["color"])
+
+    # Aplicar estilo de color por nivel de riesgo
+    styled_df = (
+        df_vista.style
+        .apply(
+            lambda s: [
+                f"background-color: {df_resumen.loc[i, 'color']}; color: white; text-align:center;"
+                if s.name == "Nivel de riesgo" else ""
+                for i in s.index
+            ],
+            axis=0
+        )
+        .format(precision=2, na_rep="—")
+    )
+
+    st.dataframe(
+        styled_df,
+        use_container_width=True,
+        hide_index=True
+    )
 
 # ------------------------------------------------------------
-# 🌡️ Gráfico de temperatura (pronóstico 7 días)
+#  Gráfico de temperatura (pronóstico 7 días)
 # ------------------------------------------------------------
 st.markdown("### 🌤️ Pronóstico de temperatura (7 días)")
 
-clima = ciudad_data.get("clima", {})
-pronostico = clima.get("pronostico_7_dias", [])
-
-if pronostico and isinstance(pronostico, list):
-    # Crear DataFrame
-    df_temp = pd.DataFrame(pronostico)
-
-    # Asegurar formato correcto
-    if {"fecha", "temp_max", "temp_min"} <= set(df_temp.columns):
-        df_temp["fecha"] = pd.to_datetime(df_temp["fecha"], errors="coerce")
-
-        fig_temp = px.line(
-            df_temp,
-            x="fecha",
-            y=["temp_max", "temp_min"],
-            labels={"value": "Temperatura (°C)", "variable": "Medición"},
-            title=f"Tendencia de temperatura – {ciudad_seleccionada}",
-            markers=True
-        )
-
-        fig_temp.update_layout(
-            legend_title_text="Tipo",
-            hovermode="x unified",
-            xaxis_title="Fecha",
-            yaxis_title="Temperatura (°C)",
-            template="plotly_white",
-            height=400
-        )
-
-        st.plotly_chart(fig_temp, use_container_width=True)
-    else:
-        st.warning("Los datos de pronóstico no tienen el formato esperado (fecha, temp_max, temp_min).")
+# Crear selector de ciudad integrado en esta sección
+ciudades_disponibles = [c["ciudad"] for c in data if "ciudad" in c]
+if not ciudades_disponibles:
+    st.warning("No hay ciudades disponibles para mostrar el pronóstico.")
 else:
-    st.info("No se encontraron datos de pronóstico de temperatura para esta ciudad.")
+    col_sel1, col_sel2 = st.columns([1.5, 3])
+    with col_sel1:
+        ciudad_seleccionada = st.selectbox(
+            "Selecciona una ciudad:",
+            options=ciudades_disponibles,
+            index=0,
+            help="Cambia la ciudad para actualizar el pronóstico de temperatura."
+        )
+
+    # Filtrar datos de la ciudad seleccionada
+    ciudad_data = next((c for c in data if c["ciudad"] == ciudad_seleccionada), None)
+    clima = ciudad_data.get("clima", {}) if ciudad_data else {}
+    pronostico = clima.get("pronostico_7_dias", [])
+
+    if pronostico and isinstance(pronostico, list):
+        # Crear DataFrame
+        df_temp = pd.DataFrame(pronostico)
+
+        # Asegurar formato correcto
+        if {"fecha", "temp_max", "temp_min"} <= set(df_temp.columns):
+            df_temp["fecha"] = pd.to_datetime(df_temp["fecha"], errors="coerce")
+
+            fig_temp = px.line(
+                df_temp,
+                x="fecha",
+                y=["temp_max", "temp_min"],
+                labels={"value": "Temperatura (°C)", "variable": "Medición"},
+                title=f"Tendencia de temperatura – {ciudad_seleccionada}",
+                markers=True
+            )
+
+            fig_temp.update_layout(
+                legend_title_text="Tipo",
+                hovermode="x unified",
+                xaxis_title="Fecha",
+                yaxis_title="Temperatura (°C)",
+                template="plotly_white",
+                height=400
+            )
+
+            st.plotly_chart(fig_temp, use_container_width=True)
+        else:
+            st.warning("Los datos de pronóstico no tienen el formato esperado (fecha, temp_max, temp_min).")
+    else:
+        st.info("No se encontraron datos de pronóstico de temperatura para esta ciudad.")
 
 # ------------------------------------------------------------
-# 💱 Comparativo general de tipo de cambio por ciudad
+#  Comparativo general de tipo de cambio por ciudad
 # ------------------------------------------------------------
 st.markdown("### 💱 Comparativo general de tipo de cambio actual (USD → moneda local)")
 
@@ -260,40 +273,49 @@ else:
     st.plotly_chart(fig_bar, use_container_width=True)
 
 # ------------------------------------------------------------
-# ⚠️ Panel de alertas activas por ciudad
+# Resumen general de alertas (todas las ciudades)
 # ------------------------------------------------------------
 st.divider()
-st.markdown("### ⚠️ Alertas activas")
+st.markdown("### ⚠️ Resumen general de alertas")
 
-alertas = ciudad_data.get("alertas", [])
+# Recolectar todas las alertas del JSON
+todas_alertas = []
+for c in data:
+    ciudad = c.get("ciudad", "—")
+    for alerta in c.get("alertas", []):
+        alerta["ciudad"] = ciudad
+        todas_alertas.append(alerta)
 
-if not alertas:
-    st.success("✅ No hay alertas activas para esta ciudad.")
+if not todas_alertas:
+    st.success("✅ No hay alertas activas en ninguna ciudad.")
 else:
-    # Ordenar por severidad para mostrar primero las más críticas
+    # Ordenar por severidad (ALTA > MEDIA > BAJA)
     orden_severidad = {"ALTA": 3, "MEDIA": 2, "BAJA": 1}
-    alertas_ordenadas = sorted(alertas,key=lambda a: orden_severidad.get(a.get("severidad", "BAJA"),0),reverse=True)
+    todas_alertas = sorted(
+        todas_alertas,
+        key=lambda a: orden_severidad.get(a.get("severidad", "BAJA"),0),
+        reverse=True
+    )
 
-    for alerta in alertas_ordenadas:
+    # Mostrar alertas agrupadas por ciudad
+    for alerta in todas_alertas:
         tipo = alerta.get("tipo", "DESCONOCIDO")
         severidad = alerta.get("severidad", "BAJA").upper()
         mensaje = alerta.get("mensaje", "Sin descripción")
+        ciudad = alerta.get("ciudad", "—")
 
-        # Definir estilo por severidad
+        # Definir color e ícono según severidad
         if severidad == "ALTA":
             color = "#dc3545"  # rojo
             icono = "🚨"
-            estilo = "error"
         elif severidad == "MEDIA":
             color = "#fd7e14"  # naranja
             icono = "⚠️"
-            estilo = "warning"
         else:
             color = "#ffc107"  # amarillo
             icono = "ℹ️"
-            estilo = "info"
 
-        # Contenedor visual con HTML + Markdown (más flexible que st.warning)
+        # Contenedor visual con información de ciudad
         st.markdown(
             f"""
             <div style='background-color:{color}20;
@@ -301,7 +323,8 @@ else:
                         padding:0.7em 1em;
                         margin-bottom:0.6em;
                         border-radius:8px'>
-                <b style='color:{color}; font-size:1.1em;'>{icono} {tipo} — {severidad}</b><br>
+                <b style='color:{color}; font-size:1.05em;'>{icono} {tipo} — {severidad}</b>
+                <span style='float:right; color:#555;'>🌆 {ciudad}</span><br>
                 <span style='color:#333;'>{mensaje}</span>
             </div>
             """,
@@ -309,9 +332,8 @@ else:
         )
 
 
-
 # ------------------------------------------------------------
-# 🌍 Mapa general de ciudades por nivel de riesgo
+# Mapa general de ciudades por nivel de riesgo
 # ------------------------------------------------------------
 st.divider()
 st.markdown("### 🌍 Mapa general de riesgo (IVV por ciudad)")
@@ -397,13 +419,3 @@ else:
     )
 
     st.plotly_chart(fig_map, use_container_width=True)
-# # Vista previa rápida (limitada) para confirmar estructura
-# with st.expander("Vista previa del JSON (primeras 2 ciudades)"):
-#     st.json(data[:2])
-
-# st.divider()
-# st.info(
-#     "✅ Paso 1 completado: carga del JSON lista.\n\n"
-#     "Siguiente paso: **selector de ciudad en la barra lateral** y construcción de "
-#     "**métricas dinámicas (IVV, riesgo, motivo)**."
-# )

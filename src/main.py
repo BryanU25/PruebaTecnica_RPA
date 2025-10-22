@@ -60,8 +60,7 @@ def main():
         # --- Combinar resultados (aunque alguno sea None) ---
         resultado_ciudad = pz.procesar_ciudad(ciudad, datos_clima, datos_divisas, datos_tiempo)
         resultados.append(resultado_ciudad)
-
-    # print(json.dumps(resultados, sort_keys=True, indent=4))
+        
 
      # --- Guardar resultado general con versiones ---
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")

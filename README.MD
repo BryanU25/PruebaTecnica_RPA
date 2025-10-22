@@ -254,4 +254,4 @@ El dashboard:
 
 El siguiente video muestra el funcionamiento completo del sistema:
 
- 📎 *Video disponible en:* (https://www.youtube.com/watch?v=AfbYbA2qHgY)
+ 📎 *Video disponible en:* (https://www.youtube.com/watch?v=kY_8jP3ZQEM)

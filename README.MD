@@ -207,7 +207,7 @@ Este módulo:
 
 🔹 Iniciar dashboard
 ```bash
-streamlit run dashboard/app_dashboard.py
+python -m streamlit run dashboard/app_dashboard.py 
 ```
 El dashboard:
 * Detecta automáticamente el archivo JSON más reciente en /data/.

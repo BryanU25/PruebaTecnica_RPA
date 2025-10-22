@@ -2,16 +2,16 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict
 from utils_dashboard import list_json_results, pick_latest_file, load_json
 
 st.set_page_config(
-    page_title="Dashboard Prueba Técnica - Mission SAS",
+    page_title="TravelCorp Dashboard",
     page_icon="📊",
     layout="wide"
 )
 
-st.title("📊 Dashboard – Prueba Técnica (Mission SAS)")
+st.title("🌍 TravelCorp Dashboard de Monitoreo de Viajes")
 
 # ---------- Helpers con caché ----------
 @st.cache_data(show_spinner=False)

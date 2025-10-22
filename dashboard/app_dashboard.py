@@ -1,4 +1,6 @@
 import streamlit as st
+import plotly.express as px
+import pandas as pd
 from pathlib import Path
 from typing import List, Dict, Optional
 from utils_dashboard import list_json_results, pick_latest_file, load_json
@@ -161,6 +163,102 @@ if ivv_info:
     col_c.metric("☀️ UV", ivv_info.get("uv_score", "—"))
 else:
     st.info("No hay datos de componentes IVV disponibles para esta ciudad.")
+
+# ------------------------------------------------------------
+# 🌡️ Gráfico de temperatura (pronóstico 7 días)
+# ------------------------------------------------------------
+st.markdown("### 🌤️ Pronóstico de temperatura (7 días)")
+
+clima = ciudad_data.get("clima", {})
+pronostico = clima.get("pronostico_7_dias", [])
+
+if pronostico and isinstance(pronostico, list):
+    # Crear DataFrame
+    df_temp = pd.DataFrame(pronostico)
+
+    # Asegurar formato correcto
+    if {"fecha", "temp_max", "temp_min"} <= set(df_temp.columns):
+        df_temp["fecha"] = pd.to_datetime(df_temp["fecha"], errors="coerce")
+
+        fig_temp = px.line(
+            df_temp,
+            x="fecha",
+            y=["temp_max", "temp_min"],
+            labels={"value": "Temperatura (°C)", "variable": "Medición"},
+            title=f"Tendencia de temperatura – {ciudad_seleccionada}",
+            markers=True
+        )
+
+        fig_temp.update_layout(
+            legend_title_text="Tipo",
+            hovermode="x unified",
+            xaxis_title="Fecha",
+            yaxis_title="Temperatura (°C)",
+            template="plotly_white",
+            height=400
+        )
+
+        st.plotly_chart(fig_temp, use_container_width=True)
+    else:
+        st.warning("Los datos de pronóstico no tienen el formato esperado (fecha, temp_max, temp_min).")
+else:
+    st.info("No se encontraron datos de pronóstico de temperatura para esta ciudad.")
+    
+# ------------------------------------------------------------
+# 💱 Comparativo general de tipo de cambio por ciudad
+# ------------------------------------------------------------
+st.markdown("### 💱 Comparativo general de tipo de cambio actual (USD → moneda local)")
+
+# Crear lista de datos agregados de todas las ciudades
+ciudades = []
+tipos_cambio = []
+variaciones = []
+
+for entry in data:
+    nombre = entry.get("ciudad")
+    fin = entry.get("finanzas", {})
+    if fin and "tipo_cambio_actual" in fin:
+        ciudades.append(nombre)
+        tipos_cambio.append(fin["tipo_cambio_actual"])
+        variaciones.append(fin.get("variacion_diaria", 0))
+
+if not ciudades:
+    st.info("No hay datos de tipo de cambio disponibles para generar el comparativo.")
+else:
+    df_comparativo = pd.DataFrame({
+        "Ciudad": ciudades,
+        "Tipo de cambio": tipos_cambio,
+        "Variación (%)": variaciones
+    })
+
+    # Crear gráfico de barras horizontales
+    fig_bar = px.bar(
+        df_comparativo,
+        x="Tipo de cambio",
+        y="Ciudad",
+        orientation="h",
+        color="Variación (%)",
+        color_continuous_scale="RdYlGn",
+        text="Tipo de cambio",
+        title="Tipo de cambio actual por ciudad (USD → moneda local)"
+    )
+
+    fig_bar.update_traces(
+        texttemplate="%{text:.3f}",
+        textposition="outside"
+    )
+
+    fig_bar.update_layout(
+        xaxis_title="Tipo de cambio",
+        yaxis_title="Ciudad",
+        coloraxis_colorbar=dict(title="Variación diaria (%)"),
+        template="plotly_white",
+        height=450,
+        margin=dict(l=80, r=40, t=60, b=40)
+    )
+
+    st.plotly_chart(fig_bar, use_container_width=True)
+
 
 # # Vista previa rápida (limitada) para confirmar estructura
 # with st.expander("Vista previa del JSON (primeras 2 ciudades)"):

@@ -308,6 +308,95 @@ else:
             unsafe_allow_html=True
         )
 
+
+
+# ------------------------------------------------------------
+# 🌍 Mapa general de ciudades por nivel de riesgo
+# ------------------------------------------------------------
+st.divider()
+st.markdown("### 🌍 Mapa general de riesgo (IVV por ciudad)")
+
+# Crear DataFrame con todas las ciudades y sus coordenadas + riesgo
+ciudades_mapa = []
+for c in data:
+    info_ivv = c.get("componentes_ivv", {})
+    clima = c.get("clima", {})
+    ciudad_conf = next(
+        (conf for conf in data if conf.get("ciudad") == c["ciudad"]), None
+    )
+
+    ciudades_mapa.append({
+        "ciudad": c.get("ciudad"),
+        "ivv_score": c.get("ivv_score"),
+        "nivel_riesgo": c.get("nivel_riesgo", "DESCONOCIDO"),
+        "color": c.get("color", "#6c757d"),
+    })
+
+# Si las coordenadas no están incluidas en el JSON, las obtendremos desde config.json
+# Cargar config si no hay coordenadas en los datos
+if all(c.get("lat") is None for c in ciudades_mapa):
+    from pathlib import Path
+    import json
+    ruta_config = Path(__file__).parent.parent / "config" / "config.json"
+    with open(ruta_config, "r", encoding="utf-8") as f:
+        config_data = json.load(f)
+    coords = {c["nombre"]: (c["lat"], c["lon"]) for c in config_data["ciudades"]}
+
+    for c in ciudades_mapa:
+        if c["ciudad"] in coords:
+            c["lat"], c["lon"] = coords[c["ciudad"]]
+
+# Filtrar las ciudades con coordenadas válidas
+df_mapa = pd.DataFrame([c for c in ciudades_mapa if c["lat"] is not None and c["lon"] is not None])
+
+if df_mapa.empty:
+    st.info("No se pudieron determinar coordenadas para generar el mapa.")
+else:
+    # Convertir colores hex a categoría según nivel
+    color_map = {
+        "BAJO": "#28a745",
+        "MEDIO": "#ffc107",
+        "ALTO": "#fd7e14",
+        "CRITICO": "#dc3545",
+        "DESCONOCIDO": "#6c757d"
+    }
+
+    df_mapa["color"] = df_mapa["nivel_riesgo"].map(color_map).fillna("#6c757d")
+
+    fig_map = px.scatter_mapbox(
+        df_mapa,
+        lat="lat",
+        lon="lon",
+        size="ivv_score",
+        color="nivel_riesgo",
+        color_discrete_map=color_map,
+        hover_name="ciudad",
+        hover_data={
+            "nivel_riesgo": True,
+            "ivv_score": True,
+            "lat": False,
+            "lon": False
+        },
+        zoom=1,
+        height=500,
+        title="Mapa mundial de riesgo (IVV por ciudad)"
+    )
+
+    fig_map.update_layout(
+        mapbox_style="carto-positron",  # Alternativas: "open-street-map", "stamen-terrain", "white-bg"
+        margin=dict(l=0, r=0, t=40, b=0),
+        coloraxis_showscale=False,
+        legend=dict(
+            title="Nivel de riesgo",
+            orientation="h",
+            yanchor="bottom",
+            y=0.01,
+            xanchor="center",
+            x=0.5
+        )
+    )
+
+    st.plotly_chart(fig_map, use_container_width=True)
 # # Vista previa rápida (limitada) para confirmar estructura
 # with st.expander("Vista previa del JSON (primeras 2 ciudades)"):
 #     st.json(data[:2])

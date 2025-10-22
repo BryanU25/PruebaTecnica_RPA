@@ -249,3 +249,9 @@ El dashboard:
     * error.log – errores críticos
 - Validaciones preventivas: si faltan datos, el sistema retorna valores por defecto.
 - Continuidad del proceso: fallos en una API no detienen la automatización general.
+
+## 🎥 Video demostrativo
+
+El siguiente video muestra el funcionamiento completo del sistema:
+
+ 📎 *Video disponible en:* (https://www.youtube.com/watch?v=AfbYbA2qHgY)

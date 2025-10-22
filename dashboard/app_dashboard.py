@@ -203,7 +203,7 @@ if pronostico and isinstance(pronostico, list):
         st.warning("Los datos de pronóstico no tienen el formato esperado (fecha, temp_max, temp_min).")
 else:
     st.info("No se encontraron datos de pronóstico de temperatura para esta ciudad.")
-    
+
 # ------------------------------------------------------------
 # 💱 Comparativo general de tipo de cambio por ciudad
 # ------------------------------------------------------------
@@ -259,6 +259,54 @@ else:
 
     st.plotly_chart(fig_bar, use_container_width=True)
 
+# ------------------------------------------------------------
+# ⚠️ Panel de alertas activas por ciudad
+# ------------------------------------------------------------
+st.divider()
+st.markdown("### ⚠️ Alertas activas")
+
+alertas = ciudad_data.get("alertas", [])
+
+if not alertas:
+    st.success("✅ No hay alertas activas para esta ciudad.")
+else:
+    # Ordenar por severidad para mostrar primero las más críticas
+    orden_severidad = {"ALTA": 3, "MEDIA": 2, "BAJA": 1}
+    alertas_ordenadas = sorted(alertas,key=lambda a: orden_severidad.get(a.get("severidad", "BAJA"),0),reverse=True)
+
+    for alerta in alertas_ordenadas:
+        tipo = alerta.get("tipo", "DESCONOCIDO")
+        severidad = alerta.get("severidad", "BAJA").upper()
+        mensaje = alerta.get("mensaje", "Sin descripción")
+
+        # Definir estilo por severidad
+        if severidad == "ALTA":
+            color = "#dc3545"  # rojo
+            icono = "🚨"
+            estilo = "error"
+        elif severidad == "MEDIA":
+            color = "#fd7e14"  # naranja
+            icono = "⚠️"
+            estilo = "warning"
+        else:
+            color = "#ffc107"  # amarillo
+            icono = "ℹ️"
+            estilo = "info"
+
+        # Contenedor visual con HTML + Markdown (más flexible que st.warning)
+        st.markdown(
+            f"""
+            <div style='background-color:{color}20;
+                        border-left:6px solid {color};
+                        padding:0.7em 1em;
+                        margin-bottom:0.6em;
+                        border-radius:8px'>
+                <b style='color:{color}; font-size:1.1em;'>{icono} {tipo} — {severidad}</b><br>
+                <span style='color:#333;'>{mensaje}</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # # Vista previa rápida (limitada) para confirmar estructura
 # with st.expander("Vista previa del JSON (primeras 2 ciudades)"):

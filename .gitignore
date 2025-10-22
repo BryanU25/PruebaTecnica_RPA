@@ -13,7 +13,7 @@ logs/
 *.log
 
 # --- DATOS GENERADOS AUTOMÁTICAMENTE ---
-
+data/resultado_general_*.json
 
 # --- ARCHIVOS TEMPORALES ---
 *.tmp

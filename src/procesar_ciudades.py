@@ -28,7 +28,7 @@ def evaluar_alertas(ciudad, datos_clima, datos_finanzas):
         if abs(variacion) > 3:
             alertas.append({"tipo": "FINANZAS", "severidad": "ALTA", "mensaje": f"Variación de tipo de cambio > 3% ({variacion}%)"})
         if tendencia == "negativa":
-            alertas.append({"tipo": "FINANZAS", "severidad": "MEDIA", "mensaje": "Tendencia negativa en el tipo de cambio"})
+            alertas.append({"tipo": "FINANZAS", "severidad": "BAJA", "mensaje": "Tendencia negativa en el tipo de cambio"})
 
     logging.info(f"Alertas evaluadas para {ciudad}: {len(alertas)} encontradas")
     return alertas
@@ -89,7 +89,7 @@ def calcular_ivv(datos_clima, datos_finanzas):
     elif ivv >= 60:
         nivel = "MEDIO"
         color = "#ffc107"
-    elif ivv >= 40:
+    elif ivv > 40:
         nivel = "ALTO"
         color = "#fd7e14"
     else:
